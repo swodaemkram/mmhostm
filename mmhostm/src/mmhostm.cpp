@@ -1,7 +1,7 @@
 //============================================================================
 // Name        : mmhostm.cpp
 // Author      : Mark Meadows
-// Version     :
+// Version     : 00.00.00.1
 // Copyright   : Copyright (c) 2019 Mark Meadows
 // Description : Mattermost Host Monitor in C++, Ansi-style
 //============================================================================
