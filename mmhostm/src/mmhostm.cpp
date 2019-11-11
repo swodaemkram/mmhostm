@@ -7,6 +7,19 @@
 //============================================================================
 
 #include <iostream>
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <curl/curl.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <string.h>
+
+
 using namespace std;
 
 int main() {
