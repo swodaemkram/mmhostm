@@ -44,12 +44,11 @@ struct curl_slist *headers = NULL;
 int main()
 {
 	read_config();//(completed)
-	logmessage = "mmlogmonitor has started";
+	logmessage = "Mattermost Host Monitor has started";
 	log_function(logmessage);
 	logmessage ="";
+	cout << "Mattermost Host Monitor has Started" << endl; // Mattermost Host Monitor
 
-
-	cout << "Mattermost Host Monitor" << endl; // Mattermost Host Monitor
 	return 0;
 }
 //------------------------End of Main------------------------------------------------
@@ -99,7 +98,7 @@ void read_config()
 {
 	 FILE *Config_File = NULL;                        // declare config file Pointer
 
-			 		Config_File = fopen("/etc/mmlogmonitor.conf", "r");  	// Open config file
+			 		Config_File = fopen("/etc/mmhostm.conf", "r");  	// Open config file
 			 		if (Config_File == NULL){
 			 			logmessage = "Could not open configuration file";
 			 			log_function(logmessage);
