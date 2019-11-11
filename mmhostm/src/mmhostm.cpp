@@ -35,7 +35,7 @@ string ByWho = "By Mark Meadows";
 void send_data_to_mattermost(void);
 void read_config(void);
 void log_function(string log_message);
-void get_log_data(void);
+void get_host_data(void);
 
 struct curl_slist *headers = NULL;
 
@@ -157,10 +157,10 @@ void read_config()
 //---------------------------End of Read Config File---------------------------------
 
 //---------------------------Read Host File------------------------------------------
-void get_log_data()
+void get_host_data()
 {
 
-
+ return;
 }
 //----------------------------End of Read Host File----------------------------------
 
