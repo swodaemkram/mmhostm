@@ -17,14 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <netinet/ip_icmp.h>
-#include <fcntl.h>
-#include <signal.h>
+
 
 using namespace std;
 
