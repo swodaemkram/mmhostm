@@ -16,17 +16,21 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <string.h>
-
+//#include <string.h>
+#include <cstring>
 
 using namespace std;
 
 char LogLocation[250] = {};   //A place to store the host file
 char WebHookURL[250] = {};	 //A Place to put the WebHookURL
+char Filter[250] = {};
 char NewLogMessage[2250] = {};
 char OldLogMessage[2250] = {};
 char SendToWebHook[500] = {};
 char SentFromWhom[250] = {};
+char GarbageCollection[250] = {};
+char HostURL[250] = {};
+char DelayinSeconds[250] = {};
 
 string logmessage = "";
 string Version = "mmhostm Ver. 00.00.01.1";
@@ -47,11 +51,13 @@ int main()
 	logmessage = "Mattermost Host Monitor has started";
 	log_function(logmessage);
 	logmessage ="";
-
-
-
-
 	cout << "Mattermost Host Monitor has Started" << endl; // Mattermost Host Monitor
+
+	check_host_data();
+
+
+
+
 	return 0;
 }
 //------------------------End of Main------------------------------------------------
@@ -109,10 +115,10 @@ void read_config()
 			 			exit(1);
 			 		}
 
-			 		fscanf(Config_File,"%[^\n]\n", LogLocation);      //This will Read to the end of each line until a carriage return
 			 		fscanf(Config_File,"%[^\n]\n", WebHookURL);	 //This will Read to the end of each line until a carriage return
-			 		//fscanf(Config_File,"%[^\n]\n", Filter);		 //This will Read to the end of each line until a carriage return
+			 		fscanf(Config_File,"%[^\n]\n", Filter);		 //This will Read to the end of each line until a carriage return
 			 		fscanf(Config_File,"%[^\n]\n",SentFromWhom); //This will Read to the end of each line until a carriage return
+			 		fscanf(Config_File,"%[^\n]\n",DelayinSeconds);
 
 			 		fclose(Config_File);
 			 		std::string logmessage1 = "=============================================================";
@@ -167,14 +173,29 @@ void read_config()
 
 void check_host_data()
 {
+//----------------------------------Read host from file-----------------------------------------------------
+	                   FILE *Config_File = NULL;                        // declare config file Pointer
 
+				 		Config_File = fopen("/etc/mmhostm.conf", "r");  	// Open config file
+				 		if (Config_File == NULL){
+				 			logmessage = "Could not open configuration file";
+				 			log_function(logmessage);
+				 			printf("Could not open Config File\n");
+				 			exit(1);
+				 		}
 
+				 		//fscanf(Config_File,"%[^\n]\n", LogLocation);      //This will Read to the end of each line until a carriage return
+				 		fscanf(Config_File,"%[^\n]\n", WebHookURL);	 //This will Read to the end of each line until a carriage return
+				 		fscanf(Config_File,"%[^\n]\n", Filter);		 //This will Read to the end of each line until a carriage return
+				 		fscanf(Config_File,"%[^\n]\n",SentFromWhom); //This will Read to the end of each line until a carriage return
+                        fscanf(Config_File,"%[^\n]\n",DelayinSeconds);
+                        fscanf(Config_File,"%[^\n]\n",GarbageCollection);
+                        fscanf(Config_File,"%[^\n]\n",GarbageCollection);
+                        fscanf(Config_File,"%[^\n]\n",HostURL);
+                        fclose(Config_File);
 
-
-
-
-
-
+                        printf("HostURL = %s\n", HostURL);
+                        return;
 
 //------------------------------------Try to connect to Host------------------------------------------------
 	               CURL *curl;
