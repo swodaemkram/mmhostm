@@ -176,7 +176,7 @@ void check_host_data()
 
 
 
-
+//------------------------------------Try to connect to Host------------------------------------------------
 	               CURL *curl;
 				   CURLcode res;
 				   curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -210,11 +210,14 @@ void check_host_data()
 
 				   curl_global_cleanup();
 				   strncpy(OldLogMessage,NewLogMessage,strlen(NewLogMessage));
-		return;
-}
-//----------------------------End of Read Host File and check host----------------------------------
+//------------------------------------------End of Try to connect to host---------------------------------
 
-//-----------------------------Safe logg message to Log File-------------------------
+
+				   return;
+}
+//----------------------------End of Read Host File and check host----------------------------------------
+
+//-----------------------------Safe logg message to Log File----------------------------------------------
 void log_function(string log_message)
 {
 
