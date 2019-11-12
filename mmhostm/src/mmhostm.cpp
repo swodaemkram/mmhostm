@@ -35,7 +35,7 @@ string ByWho = "By Mark Meadows";
 void send_data_to_mattermost(void);
 void read_config(void);
 void log_function(string log_message);
-void get_host_data(void);
+void check_host_data(void);
 
 struct curl_slist *headers = NULL;
 
@@ -47,8 +47,11 @@ int main()
 	logmessage = "Mattermost Host Monitor has started";
 	log_function(logmessage);
 	logmessage ="";
-	cout << "Mattermost Host Monitor has Started" << endl; // Mattermost Host Monitor
 
+
+
+
+	cout << "Mattermost Host Monitor has Started" << endl; // Mattermost Host Monitor
 	return 0;
 }
 //------------------------End of Main------------------------------------------------
@@ -153,15 +156,63 @@ void read_config()
 
 		return;
 }
-//---------------------------End of Read Config File---------------------------------
+//---------------------------End of Read Config File----------------------------------------------------------
 
-//---------------------------Read Host File------------------------------------------
-void get_host_data()
+/*
+---------------------------Get Host to Check From Host Config File------------------------------------------
+---------------------------Send a check packet to see if we can connect to host via http--------------------
+---------------------------Log if we are able to connect or if we failed------------------------------------
+---------------------------Go to next host and check it-----------------------------------------------------
+*/
+
+void check_host_data()
 {
 
- return;
+
+
+
+
+
+
+
+
+
+	               CURL *curl;
+				   CURLcode res;
+				   curl_global_init(CURL_GLOBAL_DEFAULT);
+				   curl = curl_easy_init();
+
+				   // Need to build the MatterMost URL to send the Data to the WebHook
+				   //Sample Curl Command to post to mattermost
+				   //curl -i -X POST -H 'Content-Type: applicati/json' -d '{"text": "This is a test of the Matermost web hook system "}' http://talk.kyin.net/hooks/6c78zsda4fy
+
+		           sprintf(SendToWebHook,"{\"text\": \"%s  %s\"}",NewLogMessage,SentFromWhom); //We have to escape all the JSON crap!
+
+				   curl_easy_setopt(curl, CURLOPT_URL,WebHookURL);
+				   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L); //Dont Check SSL Cert.
+				   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L); //Dont Check SSL Cert.
+				   //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, R"anydelim( {"text": "You removed public link for DFocuments "} )anydelim");
+				   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, SendToWebHook);
+				   headers = curl_slist_append(headers, "Expect:");    //Set Header Types For JSON
+				   headers = curl_slist_append(headers, "Content-Type: application/json"); //Set Header Type For JSON
+				   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+				   res = curl_easy_perform(curl);
+
+				   if(res != CURLE_OK)
+				   {
+					logmessage = "Unable to Connect to Server";
+					log_function(logmessage);
+					fprintf(stderr, "curl_easy_perform() failed: %s\n",
+				    curl_easy_strerror(res));
+			        curl_easy_cleanup(curl);
+			       }
+
+				   curl_global_cleanup();
+				   strncpy(OldLogMessage,NewLogMessage,strlen(NewLogMessage));
+		return;
 }
-//----------------------------End of Read Host File----------------------------------
+//----------------------------End of Read Host File and check host----------------------------------
 
 //-----------------------------Safe logg message to Log File-------------------------
 void log_function(string log_message)
